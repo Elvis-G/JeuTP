@@ -303,7 +303,7 @@ int stunDuration = 0;
 int protectionDavid = 0;
 int protectionGeorges =0;
 
-int easterEgg = 0;
+int easterEgg = 25;
 
 int pointDeVieLeRandom = 250;
 int forceDuRandom = 10;
