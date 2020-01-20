@@ -12,10 +12,10 @@ void SetColor(int ForgC) {
   HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
   CONSOLE_SCREEN_BUFFER_INFO csbi;
 
-                       //We use csbi for the wAttributes word.
+
  if(GetConsoleScreenBufferInfo(hStdOut, &csbi))
  {
-                 //Mask out all but the background attribute, and add in the forgournd color
+
       wColor = (csbi.wAttributes & 0xF0) + (ForgC & 0x0F);
       SetConsoleTextAttribute(hStdOut, wColor);
  }
@@ -466,7 +466,11 @@ if (cooldownMorphineOrdinateur > 0) {
   	} else if (forceDavid == 0) {
        forceDavid = forceDavid + 1;
     }
+<<<<<<< HEAD
 }
+=======
+
+>>>>>>> 1f9d7f3f8cdecabc252807874f11909c4c3a6187
 
 Sleep(1000);
 
@@ -615,9 +619,15 @@ Sleep(1000);
 
 //Compteur amenant à l'EasterEgg
   easterEgg = easterEgg + 1;
+<<<<<<< HEAD
 }
 //Permet de désigner le vainqueur du combat et d'arrêter le jeu
   gameover (pointDeVieGeorges, pointDeVieDavid);
+=======
+//Permet de désigner le vainqueur du combat et d'arrêter le jeu
+  gameover (pointDeVieGeorges, pointDeVieDavid, jeu);
+
+>>>>>>> 1f9d7f3f8cdecabc252807874f11909c4c3a6187
   joueur = 1;
 }
 
@@ -735,7 +745,17 @@ if (pointDeVieDavid > 0 && pointDeVieGeorges > 0 && pointDeVieLeRandom > 0){
   protectionDavid = 0;
   joueur = 1;
 
+<<<<<<< HEAD
 Sleep(1000);
+=======
+if (cooldownMorphine == 0 && pointDeVieGeorges>0) {
+	printf ("%s\n", "Taper 1 pour donner un coup de poing ; Taper 2 pour donner un coup de boule ; Taper 3 pour motiver David ;");
+  printf ("%s\n", "Taper 4 pour utiliser de la morphine ; Taper 5 pour proteger David ");
+  scanf ("%d", &coffre);
+}
+
+
+>>>>>>> 1f9d7f3f8cdecabc252807874f11909c4c3a6187
   //CHOIX DES ATTAQUES PAR LE JOUEUR
   //CHOIX DES ATTAQUES PAR LE JOUEUR
 
@@ -858,6 +878,10 @@ Sleep(1000);
 
 Sleep(1000);
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1f9d7f3f8cdecabc252807874f11909c4c3a6187
   //CHOIX DES ATTAQUES PAR L'ORDINATEUR
   //CHOIX DES ATTAQUES PAR L'ORDINATEUR
 if (pointDeVieDavid > 0 && pointDeVieGeorges > 0 && pointDeVieLeRandom > 0){
@@ -964,7 +988,11 @@ Sleep(1000);
 
 }
 //Permet de désigner le vainqueur du combat et d'arrêter le jeu
+<<<<<<< HEAD
     gameoverEasterEgg (pointDeVieGeorges, pointDeVieDavid, pointDeVieLeRandom);
 
+=======
+    gameoverEasterEgg (pointDeVieGeorges, pointDeVieDavid, jeu, pointDeVieLeRandom);
+>>>>>>> 1f9d7f3f8cdecabc252807874f11909c4c3a6187
   }
 }
