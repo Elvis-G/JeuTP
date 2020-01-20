@@ -235,32 +235,27 @@ int poingDavidRandom (int pointDeVieLeRandom, int forceDavid) {
 };
 
 
-int gameover (int pointDeVieGeorges, int pointDeVieDavid, int jeu) {
+int gameover (int pointDeVieGeorges, int pointDeVieDavid) {
 	if (pointDeVieGeorges<1) {
   SetColor(2);
-	jeu=1;
 	printf ("%s\n", "Georges a perdu");
 	}
 	else if (pointDeVieDavid<1) {
   SetColor(4);
-	jeu=1;
 	printf ("%s\n", "David a perdu");
 	}
   SetColor(15);
 };
 
-int gameoverEasterEgg (int pointDeVieGeorges, int pointDeVieDavid, int jeu, int pointDeVieLeRandom) {
+int gameoverEasterEgg (int pointDeVieGeorges, int pointDeVieDavid, int pointDeVieLeRandom) {
 	if (pointDeVieGeorges<1) {
     SetColor(2);
-	  jeu=1;
 	  printf ("%s\n", "Georges a peri au combat, vous avez perdu");
 	} else if (pointDeVieDavid<1) {
     SetColor(4);
-	  jeu=1;
 	  printf ("%s\n", "David a peri au combat, vous avez perdu");
 	} else if (pointDeVieLeRandom<1) {
-    SetColor(4);
-  	jeu=1;
+    SetColor(8);
   	printf ("%s\n", "Vous avez vaincu le random, BRAVO");
   }
   SetColor(15);
@@ -271,7 +266,6 @@ int gameoverEasterEgg (int pointDeVieGeorges, int pointDeVieDavid, int jeu, int 
 
 int main() {
 
-int jeu = 0;
 int coffre = 0;
 int joueur = 1;
 
@@ -315,12 +309,13 @@ int coffreRandom = 0;
 
 SetColor(15);
 // petite Introduction
-printf ("%s\n\n", "Vous etes Georges et vous allez cassez la gueule a David");
+printf ("\n\n%s\n\n", "Vous etes Georges et vous allez cassez la gueule a David");
 
 //Boucle permettant le combat entre 1 joueur et "l'ia"
-while (pointDeVieDavid>0 && pointDeVieGeorges>0 && easterEgg < 30 && jeu == 0) {
+while (pointDeVieDavid>0 && pointDeVieGeorges>0 && easterEgg < 30) {
   //Attaques disponibles pour le joueur (ainsi que l'ordinateur)
-  if (cooldownMorphine == 0 && jeu == 0){
+if (pointDeVieDavid > 0 && pointDeVieGeorges > 0){
+  if (cooldownMorphine == 0){
 	printf ("%s\n", "Taper 1 pour donner un coup de poing ; Taper 2 pour vous concentrer ; Taper 3 pour le destabiliser ;");
   printf ("%s\n", "Taper 4 pour utiliser de la morphine ; Taper 5 pour vous donner de l'adrenaline ");
   scanf ("%d", &coffre);
@@ -412,6 +407,7 @@ cooldown de 3 tours pour cette attaque */
 joueur = 2;
 coffre = (rand() % (10 - 6 + 1)) + 6;
 
+Sleep(1000);
 
 //MORPHINE ET SES COOLDOWNS POUR L'ORDINATEUR
 //MORPHINE ET SES COOLDOWNS POUR L'ORDINATEUR
@@ -470,44 +466,43 @@ if (cooldownMorphineOrdinateur > 0) {
   	} else if (forceDavid == 0) {
        forceDavid = forceDavid + 1;
     }
-
-if (jeu == 0){
-  gameover (pointDeVieGeorges, pointDeVieDavid, jeu);
 }
 
-//CHOIX DES ATTAQUES PAR L'ORDINATEUR
-//CHOIX DES ATTAQUES PAR L'ORDINATEUR
+Sleep(1000);
 
+//CHOIX DES ATTAQUES PAR L'ORDINATEUR
+//CHOIX DES ATTAQUES PAR L'ORDINATEUR
+if (pointDeVieDavid > 0 && pointDeVieGeorges > 0){
 // Coup de poing
-	if (coffre == 6 && joueur == 2 && cooldownMorphineOrdinateur == 0 && jeu == 0){
+	if (coffre == 6 && joueur == 2 && cooldownMorphineOrdinateur == 0){
      pointDeVieGeorges = pointDeVieGeorges - (forceDavid*3);
 	   poingDavid(pointDeVieGeorges, forceDavid);
 // Augmentre sa force ; concentration
-	} else if (coffre == 7 && joueur == 2 && cooldownMorphineOrdinateur == 0 && jeu == 0) {
+	} else if (coffre == 7 && joueur == 2 && cooldownMorphineOrdinateur == 0) {
      forceDavid = forceDavid + 1;
 	   laforcedeDavid(forceDavid);
 // Baisse la force de l'adversaire ; Destabiliser
-	} else if (coffre == 8 && joueur == 2 && forceGeorges > 1 && cooldownMorphineOrdinateur == 0 && jeu == 0) {
+	} else if (coffre == 8 && joueur == 2 && forceGeorges > 1 && cooldownMorphineOrdinateur == 0) {
      forceGeorges = forceGeorges - 1;
 	   DavidDestabilise();
 /* Empêche l'ordinateur d'utiliser la capacité "Destabiliser" lorsqu'il nest pas utile de le faire,
 entrainant un coup de poing */
-	} else if (coffre == 8 && joueur == 2 && forceGeorges == 1 && cooldownMorphineOrdinateur == 0 && jeu == 0) {
+	} else if (coffre == 8 && joueur == 2 && forceGeorges == 1 && cooldownMorphineOrdinateur == 0) {
      pointDeVieGeorges = pointDeVieGeorges - (forceDavid*3);
      poingDavid(pointDeVieGeorges, forceDavid);
 // Entraîne la regénération des points de vie ; 2 tours sans attaquer avant de les récupérer
-  } else if (coffre == 9 && joueur == 2 && cooldownMorphineOrdinateur == 0 && pointDeVieDavid < 60 && jeu == 0) {
+  } else if (coffre == 9 && joueur == 2 && cooldownMorphineOrdinateur == 0 && pointDeVieDavid < 60) {
      cooldownMorphineOrdinateur = 3;
      morphineDavid();
      pvRenduMorphineOrdinateur = (rand() % (70 - 40 + 1)) + 40;
 /* Empêche l'ordinateur d'utiliser la capacité "Morphine" lorsqu'il nest pas utile de le faire,
 entrainant un coup de poing */
-  } else if (coffre == 9 && joueur == 2 && cooldownMorphineOrdinateur == 0 && pointDeVieDavid >= 60 && jeu == 0) {
+  } else if (coffre == 9 && joueur == 2 && cooldownMorphineOrdinateur == 0 && pointDeVieDavid >= 60) {
      pointDeVieGeorges = pointDeVieGeorges - (forceDavid*3);
      poingDavid(pointDeVieGeorges, forceDavid);
 /* Permet d'enchaîner plusieurs attaques ; le nombre d'attaques est basé sur un pourcentage de réussite ;
 cooldown de 3 tours pour cette attaque */
-  } else if (coffre == 10 && joueur == 2 && cooldownMorphineOrdinateur == 0 && cooldownAdrenalineOrdinateur == 0 && jeu == 0) {
+  } else if (coffre == 10 && joueur == 2 && cooldownMorphineOrdinateur == 0 && cooldownAdrenalineOrdinateur == 0) {
   SetColor(4);
     if (enchainementAdrenalineOrdinateur == 0) {
       printf ("%s\n\n", "David utilise adrenaline");
@@ -556,12 +551,13 @@ cooldown de 3 tours pour cette attaque */
   printf ("\n%s\n", "////////////////////////////////");
   printf ("%s\n\n", "////////////////////////////////");
 // Lorsqu'adrénaline est sous cooldown
-  } else if (coffre == 10 && joueur == 2 && cooldownMorphine == 0 && cooldownAdrenalineOrdinateur > 0 && jeu == 0) {
+  } else if (coffre == 10 && joueur == 2 && cooldownMorphine == 0 && cooldownAdrenalineOrdinateur > 0) {
    SetColor(4);
    pointDeVieGeorges = pointDeVieGeorges - (forceDavid*3);
    poingDavid(pointDeVieGeorges, forceDavid);
 }
 
+Sleep(1000);
 
 //MORPHINE ET SES COOLDOWNS POUR LE JOUEUR
 //MORPHINE ET SES COOLDOWNS POUR LE JOUEUR
@@ -616,12 +612,12 @@ cooldown de 3 tours pour cette attaque */
   	} else if (forceDavid == 0) {
        forceDavid = forceDavid + 1;
     }
+
 //Compteur amenant à l'EasterEgg
   easterEgg = easterEgg + 1;
-//Permet de désigner le vainqueur du combat et d'arrêter le jeu
-if (jeu == 0){
-  gameover (pointDeVieGeorges, pointDeVieDavid, jeu);
 }
+//Permet de désigner le vainqueur du combat et d'arrêter le jeu
+  gameover (pointDeVieGeorges, pointDeVieDavid);
   joueur = 1;
 }
 
@@ -631,25 +627,31 @@ if (jeu == 0){
 if (easterEgg == 30 && pointDeVieDavid>0 && pointDeVieGeorges>0){
 printf ("%s\n", "*************************");
 printf ("%s\n", "Votre combat contre David dure depuis un moment, peut-etre est-ce du au fait que vous ne voulez le combattre ");
+Sleep(1000);
 printf ("%s\n", "ou que votre endurance/force est similaire, en attendant quelqu'un est intervenu et a decider de se joindre au combat ");
+Sleep(1000);
 printf ("%s\n", "en vous mettant tout les deux hors d'etat de nuire. Vous et David decidez de vous allier afin de lui faire fermez");
+Sleep(1000);
 printf ("%s\n\n", "sa gueule, a ce vieux random.");
-
+Sleep(1000);
 printf ("%s\n", "Pour gagner ce combat, vous ainsi que David, devez rester en vie et reduire les points de vie de votre adversaire a 0");
+Sleep(1000);
 printf ("%s\n", "Des competences differentes vont faire leur apparition, vous adaptant a la situation et a votre adversaire");
+Sleep(1000);
 printf ("%s\n\n", "*************************");
 }
 
 cooldownMorphine = 0;
 cooldownMorphineOrdinateur = 0;
 
-while (pointDeVieDavid>0 && pointDeVieGeorges>0 && pointDeVieLeRandom>0 && easterEgg >= 30 && jeu == 0) {
+while (pointDeVieDavid>0 && pointDeVieGeorges>0 && pointDeVieLeRandom>0 && easterEgg >= 30) {
 
   joueur = 0;
   if (stunDuration > 0){
     stunDuration = stunDuration -1;
   }
 
+Sleep(1000);
 
   //CHOIX DES ATTAQUES PAR LE RANDOM
   //CHOIX DES ATTAQUES PAR LE RANDOM
@@ -658,9 +660,9 @@ while (pointDeVieDavid>0 && pointDeVieGeorges>0 && pointDeVieLeRandom>0 && easte
   coffreRandom = (rand() % (2 - 1 + 1)) + 1;
   viserAleatoire = (rand() % (2 - 1 + 1)) + 1;
 // viser aléatoire = 1 = David // viser aléatoire = 2 = Georges
-
+if (pointDeVieDavid > 0 && pointDeVieGeorges > 0 && pointDeVieLeRandom > 0){
   // patate de forain est l'équivalent de coup de poing
-    if (coffreRandom == 1 && joueur == 0 && viserAleatoire == 1 && stunDuration == 0 && jeu == 0){
+    if (coffreRandom == 1 && joueur == 0 && viserAleatoire == 1 && stunDuration == 0){
     if (protectionDavid > 0) {
        SetColor(8);
        printf ("\n%s\n", "Le random envoie une patate de forain sur David et inflige aucun degat, David etant proteger");
@@ -671,7 +673,7 @@ while (pointDeVieDavid>0 && pointDeVieGeorges>0 && pointDeVieLeRandom>0 && easte
       patateDeForainVersDavid (forceDuRandom, pointDeVieDavid);
      }
 
-    } else if (coffreRandom == 1 && joueur == 0 && viserAleatoire == 2 && stunDuration == 0 && jeu == 0) {
+    } else if (coffreRandom == 1 && joueur == 0 && viserAleatoire == 2 && stunDuration == 0) {
      if (protectionGeorges > 0) {
         SetColor(8);
         printf ("\n%s\n", "Le random envoie une patate de forain sur Georges et inflige aucun degat, Georges etant proteger");
@@ -682,7 +684,7 @@ while (pointDeVieDavid>0 && pointDeVieGeorges>0 && pointDeVieLeRandom>0 && easte
        patateDeForainVersGeorges (forceDuRandom, pointDeVieGeorges);
       }
     // cette attaque permet de toucher à la fois David et Georges
-    } else if (coffreRandom == 2 && joueur == 0 && protectionGeorges == 0 && stunDuration == 0 && jeu == 0) {
+    } else if (coffreRandom == 2 && joueur == 0 && protectionGeorges == 0 && stunDuration == 0) {
      if (protectionGeorges == 0 && protectionDavid == 0) {
        pointDeVieGeorges = pointDeVieGeorges - forceDuRandom;
        pointDeVieDavid = pointDeVieDavid - forceDuRandom;
@@ -720,36 +722,36 @@ while (pointDeVieDavid>0 && pointDeVieGeorges>0 && pointDeVieLeRandom>0 && easte
        printf ("\n%s\n", "Le random envoie une balayette sur Georges et David, et inflige aucun degat, David et Georges etant proteger");
        SetColor(15);
      }
-    } else if (stunDuration > 0 && jeu == 0) {
+    } else if (stunDuration > 0) {
       SetColor(8);
       printf ("\n%s\n", "Le random est encore sonner");
       SetColor(15);
       printf ("\n%s\n", "--------------------------------");
     }
 
+}
 
+if (pointDeVieDavid > 0 && pointDeVieGeorges > 0 && pointDeVieLeRandom > 0){
   protectionDavid = 0;
   joueur = 1;
 
-if (cooldownMorphine == 0 && pointDeVieGeorges>0) {
-	printf ("%s\n", "Taper 1 pour donner un coup de poing ; Taper 2 pour donner un coup de boule ; Taper 3 pour motiver David ;");
-  printf ("%s\n", "Taper 4 pour utiliser de la morphine ; Taper 5 pour proteger David ");
-  scanf ("%d", &coffre);
-}
-
-if (jeu == 0){
-  gameoverEasterEgg (pointDeVieGeorges, pointDeVieDavid, jeu, pointDeVieLeRandom);
-}
-
+Sleep(1000);
   //CHOIX DES ATTAQUES PAR LE JOUEUR
   //CHOIX DES ATTAQUES PAR LE JOUEUR
+
+  if (cooldownMorphine == 0 && pointDeVieGeorges>0) {
+  	printf ("%s\n", "Taper 1 pour donner un coup de poing ; Taper 2 pour donner un coup de boule ; Taper 3 pour motiver David ;");
+    printf ("%s\n", "Taper 4 pour utiliser de la morphine ; Taper 5 pour proteger David ");
+    scanf ("%d", &coffre);
+  }
+
 
   // Coup de poing
-  	if (coffre == 1 && joueur == 1 && cooldownMorphine == 0 && jeu == 0){
+  	if (coffre == 1 && joueur == 1 && cooldownMorphine == 0){
        pointDeVieLeRandom = pointDeVieLeRandom - (forceGeorges*3);
   	   poingGeorgesRandom(pointDeVieLeRandom, forceGeorges);
   // Capacité permettant de stun son adversaire : 25% de chance
-    } else if (coffre == 2 && joueur == 1 && cooldownMorphine == 0 && stunDuration == 0 && jeu == 0) {
+    } else if (coffre == 2 && joueur == 1 && cooldownMorphine == 0 && stunDuration == 0) {
        stunProba = (rand() % (4 - 1 + 1)) + 1;
        coupDeBouleGeorges(forceGeorges);
        if (stunProba == 1) {
@@ -764,25 +766,25 @@ if (jeu == 0){
         	printf ("\n%s\n\n", "--------------------------------");
        }
   // Si l'ennemi est déjà stun, votre attaque rate
-    } else if (coffre == 2 && joueur == 1 && cooldownMorphine == 0 && jeu == 0) {
+    } else if (coffre == 2 && joueur == 1 && cooldownMorphine == 0) {
       SetColor(2);
       printf ("\n%s\n", "Votre ennemi est deja stun, vous ratez votre coup");
       SetColor(15);
       printf ("\n%s\n\n", "--------------------------------");
   // Augmente la force de son allié
-  	} else if (coffre == 3 && joueur == 1 && cooldownMorphine == 0 && jeu == 0) {
+  	} else if (coffre == 3 && joueur == 1 && cooldownMorphine == 0) {
        forceDavid = forceDavid + 1;
   	   GeorgesMotive(forceDavid);
   // Entraîne la regénération des points de vie ; 2 tours sans attaquer avant de les récupérer
-  	} else if (coffre == 4 && joueur == 1 && cooldownMorphine == 0 && jeu == 0) {
+  	} else if (coffre == 4 && joueur == 1 && cooldownMorphine == 0) {
        cooldownMorphine = 3;
   	   morphineGeorges();
        pvRenduMorphine = (rand() % (70 - 40 + 1)) + 40;
-    } else if (coffre == 5 && joueur == 1 && cooldownMorphine == 0 && jeu == 0) {
+    } else if (coffre == 5 && joueur == 1 && cooldownMorphine == 0) {
        protectionDavid = 1;
        GeorgesProtege ();
   // Lorsque le joueur rentre un chiffre correspondant à aucune capacité, cela équivaut à un coup raté
-    } else if (coffre >=6 && joueur == 1 && cooldownMorphine == 0 && jeu == 0) {
+    } else if (coffre >=6 && joueur == 1 && cooldownMorphine == 0) {
        SetColor(2);
        printf ("\n%s\n", "Georges rate son coup, c'est une honte");
      	 SetColor(15);
@@ -793,6 +795,7 @@ if (jeu == 0){
   protectionGeorges = 0;
   coffre = (rand() % (10 - 6 + 1)) + 6;
 
+Sleep(1000);
 
   //MORPHINE ET SES COOLDOWNS POUR L'ORDINATEUR
   //MORPHINE ET SES COOLDOWNS POUR L'ORDINATEUR
@@ -851,19 +854,19 @@ if (jeu == 0){
     	} else if (forceDavid == 0) {
          forceDavid = forceDavid + 1;
       }
+}
 
-      if (jeu == 0){
-        gameoverEasterEgg (pointDeVieGeorges, pointDeVieDavid, jeu, pointDeVieLeRandom);
-      }
+Sleep(1000);
+
   //CHOIX DES ATTAQUES PAR L'ORDINATEUR
   //CHOIX DES ATTAQUES PAR L'ORDINATEUR
-
+if (pointDeVieDavid > 0 && pointDeVieGeorges > 0 && pointDeVieLeRandom > 0){
   // Coup de poing
-  	if (coffre == 6 && joueur == 2 && cooldownMorphineOrdinateur == 0 && jeu == 0){
+  	if (coffre == 6 && joueur == 2 && cooldownMorphineOrdinateur == 0){
        pointDeVieLeRandom = pointDeVieLeRandom - (forceDavid*3);
   	   poingDavidRandom(pointDeVieLeRandom, forceDavid);
   // Capacité permettant de stun son adversaire : 25% de chance
-    } else if (coffre == 7 && joueur == 2 && cooldownMorphineOrdinateur == 0 && stunDuration == 0 && jeu == 0) {
+    } else if (coffre == 7 && joueur == 2 && cooldownMorphineOrdinateur == 0 && stunDuration == 0) {
      stunProbaOrdinateur = (rand() % (4 - 1 + 1)) + 1;
      coupDeBouleDavid(forceDavid);
      if (stunProbaOrdinateur == 1) {
@@ -880,31 +883,31 @@ if (jeu == 0){
         printf ("%s\n\n", "////////////////////////////////");
      }
   // empêche l'ordinateur d'utiliser la capacité si l'ennemi est déjà stun
-    } else if (coffre == 7 && joueur == 2 && cooldownMorphineOrdinateur == 0 && jeu == 0) {
+    } else if (coffre == 7 && joueur == 2 && cooldownMorphineOrdinateur == 0) {
       pointDeVieLeRandom = pointDeVieLeRandom - (forceDavid*3);
       poingDavidRandom(pointDeVieLeRandom, forceDavid);
   // Baisse la force de l'adversaire ; Destabiliser
-  	} else if (coffre == 8 && joueur == 2 && forceGeorges > 1 && cooldownMorphineOrdinateur == 0 && jeu == 0) {
+  	} else if (coffre == 8 && joueur == 2 && forceGeorges > 1 && cooldownMorphineOrdinateur == 0) {
        forceGeorges = forceGeorges - 1;
   	   DavidDestabilise(forceGeorges);
   /* Empêche l'ordinateur d'utiliser la capacité "Destabiliser" lorsqu'il nest pas utile de le faire,
   entrainant un coup de poing */
-  	} else if (coffre == 8 && joueur == 2 && forceGeorges == 1 && cooldownMorphineOrdinateur == 0 && jeu == 0) {
+  	} else if (coffre == 8 && joueur == 2 && forceGeorges == 1 && cooldownMorphineOrdinateur == 0) {
       pointDeVieLeRandom = pointDeVieLeRandom - (forceDavid*3);
       poingDavidRandom(pointDeVieLeRandom, forceDavid);
   // Entraîne la regénération des points de vie ; 2 tours sans attaquer avant de les récupérer
-    } else if (coffre == 9 && joueur == 2 && cooldownMorphineOrdinateur == 0 && pointDeVieDavid < 60 && jeu == 0) {
+    } else if (coffre == 9 && joueur == 2 && cooldownMorphineOrdinateur == 0 && pointDeVieDavid < 60) {
        cooldownMorphineOrdinateur = 3;
        morphineDavid();
        pvRenduMorphineOrdinateur = (rand() % (70 - 40 + 1)) + 40;
   /* Empêche l'ordinateur d'utiliser la capacité "Morphine" lorsqu'il nest pas utile de le faire,
   entrainant un coup de poing */
-    } else if (coffre == 9 && joueur == 2 && cooldownMorphineOrdinateur == 0 && pointDeVieDavid >= 60 && jeu == 0) {
+    } else if (coffre == 9 && joueur == 2 && cooldownMorphineOrdinateur == 0 && pointDeVieDavid >= 60) {
       pointDeVieLeRandom = pointDeVieLeRandom - (forceDavid*3);
       poingDavidRandom(pointDeVieLeRandom, forceDavid);
   /* Permet d'enchaîner plusieurs attaques ; le nombre d'attaques est basé sur un pourcentage de réussite ;
   cooldown de 3 tours pour cette attaque */
-    } else if (coffre == 10 && joueur == 2 && cooldownMorphineOrdinateur == 0 && cooldownAdrenalineOrdinateur == 0 && jeu == 0) {
+    } else if (coffre == 10 && joueur == 2 && cooldownMorphineOrdinateur == 0 && cooldownAdrenalineOrdinateur == 0) {
         protectionGeorges = 1;
         DavidProtege ();
     }
@@ -912,7 +915,7 @@ if (jeu == 0){
 
   //MORPHINE ET SES COOLDOWNS POUR LE JOUEUR
   //MORPHINE ET SES COOLDOWNS POUR LE JOUEUR
-
+Sleep(1000);
   //Cooldown de la morphine pour l'utilisation des autres capacités
       if (cooldownMorphine > 0) {
          cooldownMorphine = cooldownMorphine - 1;
@@ -958,10 +961,10 @@ if (jeu == 0){
     	} else if (forceDavid == 0) {
          forceDavid = forceDavid + 1;
       }
+
+}
 //Permet de désigner le vainqueur du combat et d'arrêter le jeu
-  if (jeu == 0){
-    gameoverEasterEgg (pointDeVieGeorges, pointDeVieDavid, jeu, pointDeVieLeRandom);
-  }
+    gameoverEasterEgg (pointDeVieGeorges, pointDeVieDavid, pointDeVieLeRandom);
 
   }
 }
